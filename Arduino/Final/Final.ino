@@ -43,20 +43,6 @@ pinMode(13,OUTPUT);
 pinMode(12,OUTPUT);
 Serial.begin(115200);
 writeaddr = 0; actionsec="2,2,2,2"; minmax="000,100";  writeeeprom(actionsec); writeeeprom(minmax);
-va1=(1024 - analogRead(a1))/10.24;
-va2=(1024 - analogRead(a2))/10.24;
-va3=(1024 - analogRead(a3))/10.24;
-va4=(1024 - analogRead(a4))/10.24;
-readaddr = 0;
-actionsec=readeeprom();
-minmax=readeeprom();
-min=(minmax.substring(0,3)).toInt();
-max=(minmax.substring(4,7)).toInt();
-ba1=ba2=ba3=ba4='1';
-if(va1>min&&va1<max){ba1='0';}
-if(va2>min&&va1<max){ba2='0';}
-if(va3>min&&va1<max){ba3='0';}
-if(va4>min&&va1<max){ba4='0';}
 }
 
 void loop(){
@@ -88,19 +74,15 @@ if(s4!='2'){digitalWrite(13,preftooutput(s4));}
 //automation
 if(s1=='2'){if(va1<min){digitalWrite(9,preftooutput('1'));}
 else if(va1>max){digitalWrite(9,preftooutput('0'));}
-else{digitalWrite(9,preftooutput(ba1));}
 }
 if(s2=='2'){if(va2<min){digitalWrite(10,preftooutput('1'));}
 else if(va2>max){digitalWrite(10,preftooutput('0'));}
-else{digitalWrite(10,preftooutput(ba2));}
 }
 if(s3=='2'){if(va3<min){digitalWrite(12,preftooutput('1'));}
 else if(va3>max){digitalWrite(12,preftooutput('0'));}
-else{digitalWrite(12,preftooutput(ba3));}
 }
 if(s4=='2'){if(va4<min){digitalWrite(13,preftooutput('1'));}
 else if(va4>max){digitalWrite(13,preftooutput('0'));}
-else{digitalWrite(13,preftooutput(ba4));}
 }
 //automation end
 
