@@ -2,8 +2,6 @@
 #include <SoftwareSerial.h>
 #include <TimedAction.h>
 
-SoftwareSerial mySerial(12, 13); //Rx,Tx
-
 int a0 = A0,a1 = A1,a2 = A2,a3 = A3,a4 = A4,a5 = A5;
 int va0,va1,va2,va3,va4,va5;
 char ba1,ba2,ba3,ba4;
@@ -40,19 +38,12 @@ char preftooutput(char pref){
   return LOW;
 }
 
-String getresponse(){
-  String recdata="";
-  int incoming;
-  while (Serial.available() > 0){
-    incoming = Serial.read();
-    if (incoming>39 && incoming<58){
-      recdata += char(incoming);
-      if (incoming==41){
-        return recdata;
-        }
-      }
-  }
-  return "nodata";
+int getresponse(){
+  int incoming=1000;
+  if(Serial.available()>0){
+    incoming=Serial.read();
+    }
+    return incoming;
   }
 
 void basics()
@@ -100,7 +91,18 @@ else if(va4>max){digitalWrite(13,preftooutput('0'));}
 }
 
 void handlecomm(){
-  Serial.println(getresponse());
+  int updateaddr;
+  int resp=getresponse();
+  Serial.println(char(resp));
+  if (char(resp)=='('){
+    resp=getresponse();
+    if(char(resp)=='1'){updateaddr=1;}
+    else if(char(resp)=='2'){updateaddr=3;}
+    else if(char(resp)=='3'){updateaddr=5;}
+    resp=getresponse();
+    EEPROM.update(updateaddr,char(resp));
+    Serial.println(char(resp));
+    }
   }
 
 TimedAction ta1 = TimedAction(1000,basics);
@@ -112,7 +114,7 @@ pinMode(10,OUTPUT);
 pinMode(13,OUTPUT);
 pinMode(12,OUTPUT);
 Serial.begin(115200);
-//writeaddr = 0; actionsec="2,2,2,2"; minmax="000,100";  writeeeprom(actionsec); writeeeprom(minmax);
+writeaddr = 0; actionsec="2,2,2,2"; minmax="050,055";  writeeeprom(actionsec); writeeeprom(minmax);
 }
 
 void loop(){
