@@ -1,8 +1,12 @@
 #include <EEPROM.h>
+#include <SoftwareSerial.h>
+#include <TimedAction.h>
+
+SoftwareSerial mySerial(12, 13); //Rx,Tx
+
 int a0 = A0,a1 = A1,a2 = A2,a3 = A3,a4 = A4,a5 = A5;
 int va0,va1,va2,va3,va4,va5;
 char ba1,ba2,ba3,ba4;
-
 String actionsec,minmax;
 int min,max;
 char s1,s2,s3,s4;
@@ -36,16 +40,23 @@ char preftooutput(char pref){
   return LOW;
 }
 
-void setup() {
-pinMode(9,OUTPUT);
-pinMode(10,OUTPUT);
-pinMode(13,OUTPUT);
-pinMode(12,OUTPUT);
-Serial.begin(115200);
-writeaddr = 0; actionsec="2,2,2,2"; minmax="000,100";  writeeeprom(actionsec); writeeeprom(minmax);
-}
+String getresponse(){
+  String recdata="";
+  int incoming;
+  while (Serial.available() > 0){
+    incoming = Serial.read();
+    if (incoming>39 && incoming<58){
+      recdata += char(incoming);
+      if (incoming==41){
+        return recdata;
+        }
+      }
+  }
+  return "nodata";
+  }
 
-void loop(){
+void basics()
+{
 va0=analogRead(a0);
 va1=(1024 - analogRead(a1))/10.24;
 va2=(1024 - analogRead(a2))/10.24;
@@ -87,3 +98,24 @@ else if(va4>max){digitalWrite(13,preftooutput('0'));}
 //automation end
 
 }
+
+void handlecomm(){
+  Serial.println(getresponse());
+  }
+
+TimedAction ta1 = TimedAction(1000,basics);
+TimedAction ta2 = TimedAction(100,handlecomm);
+
+void setup() {
+pinMode(9,OUTPUT);
+pinMode(10,OUTPUT);
+pinMode(13,OUTPUT);
+pinMode(12,OUTPUT);
+Serial.begin(115200);
+//writeaddr = 0; actionsec="2,2,2,2"; minmax="000,100";  writeeeprom(actionsec); writeeeprom(minmax);
+}
+
+void loop(){
+  ta1.check();
+  ta2.check();
+  }
