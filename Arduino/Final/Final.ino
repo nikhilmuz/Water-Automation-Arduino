@@ -93,31 +93,42 @@ else if(va4>max){digitalWrite(13,preftooutput('0'));}
 void handlecomm(){
   int updateaddr;
   int resp=getresponse();
-  Serial.println(char(resp));
+ // Serial.println(char(resp));
   if (char(resp)=='('){
+    while((resp <47) || (resp>58) ){
+    resp=getresponse();}
+    Serial.println("2nd");
+    //Serial.println(char(resp));
+    if(char(resp)=='1'){updateaddr=1;
+    Serial.println("1");
+    }
+    else if(char(resp)=='2'){updateaddr=3;
+    Serial.println("2");}
+    else if(char(resp)=='3'){updateaddr=5;
+    Serial.println("3");}
+    else if(char(resp)=='4'){updateaddr=7;
+    Serial.println("4");}
+    for(int i=0;i<10;i++){
     resp=getresponse();
-    if(char(resp)=='1'){updateaddr=1;}
-    else if(char(resp)=='2'){updateaddr=3;}
-    else if(char(resp)=='3'){updateaddr=5;}
-    resp=getresponse();
+    if(char(resp)=='0'||char(resp)=='1'||char(resp)=='2')
     EEPROM.update(updateaddr,char(resp));
     Serial.println(char(resp));
     }
   }
+  }
 
 TimedAction ta1 = TimedAction(1000,basics);
-TimedAction ta2 = TimedAction(100,handlecomm);
 
 void setup() {
 pinMode(9,OUTPUT);
 pinMode(10,OUTPUT);
-pinMode(13,OUTPUT);
 pinMode(12,OUTPUT);
+pinMode(13,OUTPUT);
 Serial.begin(115200);
 writeaddr = 0; actionsec="2,2,2,2"; minmax="050,055";  writeeeprom(actionsec); writeeeprom(minmax);
 }
 
 void loop(){
   ta1.check();
-  ta2.check();
+  handlecomm();
   }
