@@ -68,14 +68,14 @@ s4=actionsec[6];
 min=(minmax.substring(0,3)).toInt();
 max=(minmax.substring(4,7)).toInt();
 
-if(s1!='2'){digitalWrite(9,preftooutput(s1));}
+if(s1!='2'){digitalWrite(8,preftooutput(s1));}
 if(s2!='2'){digitalWrite(10,preftooutput(s2));}
 if(s3!='2'){digitalWrite(12,preftooutput(s3));}
 if(s4!='2'){digitalWrite(13,preftooutput(s4));}
 
 //automation
-if(s1=='2'){if(va1<min){digitalWrite(9,preftooutput('1'));}
-else if(va1>max){digitalWrite(9,preftooutput('0'));}
+if(s1=='2'){if(va1<min){digitalWrite(8,preftooutput('1'));}
+else if(va1>max){digitalWrite(8,preftooutput('0'));}
 }
 if(s2=='2'){if(va2<min){digitalWrite(10,preftooutput('1'));}
 else if(va2>max){digitalWrite(10,preftooutput('0'));}
@@ -141,14 +141,14 @@ void output(){
   va3=(1024 - analogRead(a3))/10.24;
   va4=(1024 - analogRead(a4))/10.24;
   va5=analogRead(a5);
-  Serial.println("("+actionsec+","+minmax+","+va1+","+va2+","+va3+","+va4+","+va5+")");
+  Serial.println("("+actionsec+","+minmax+","+va0+","+va1+","+va2+","+va3+","+va4+","+va5+")");
   }
 
 TimedAction ta1 = TimedAction(1000,basics);
 TimedAction ta2 = TimedAction(2000,output);
 
 void setup() {
-pinMode(9,OUTPUT);
+pinMode(8,OUTPUT);
 pinMode(10,OUTPUT);
 pinMode(12,OUTPUT);
 pinMode(13,OUTPUT);
