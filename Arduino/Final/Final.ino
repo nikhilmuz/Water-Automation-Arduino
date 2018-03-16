@@ -8,7 +8,7 @@ char ba1,ba2,ba3,ba4;
 String actionsec,minmax;
 int min,max;
 char s1,s2,s3,s4;
-
+int addr = 9;
 //eeprom start
 int writeaddr = 0;
 int readaddr = 0;
@@ -115,6 +115,20 @@ void handlecomm(){
     Serial.println(char(resp));
     }
   }
+  if (char(resp)=='@'){
+    Serial.println(char(resp));
+    readminmax:
+    for(int i=0;i<10;i++){
+    resp=getresponse();
+    Serial.println(char(resp));
+      if (resp>43 && resp<58 && addr<16){
+         EEPROM.update(addr,char(resp));
+         addr++;
+         goto readminmax;
+        }
+      }
+    
+    }
   }
 
 void output(){
@@ -131,7 +145,7 @@ void output(){
   }
 
 TimedAction ta1 = TimedAction(1000,basics);
-TimedAction ta2 = TimedAction(5000,output);
+TimedAction ta2 = TimedAction(2000,output);
 
 void setup() {
 pinMode(9,OUTPUT);
