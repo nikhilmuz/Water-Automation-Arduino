@@ -117,7 +117,21 @@ void handlecomm(){
   }
   }
 
+void output(){
+  readaddr = 0;
+  actionsec=readeeprom();
+  minmax=readeeprom();
+  va0=analogRead(a0);
+  va1=(1024 - analogRead(a1))/10.24;
+  va2=(1024 - analogRead(a2))/10.24;
+  va3=(1024 - analogRead(a3))/10.24;
+  va4=(1024 - analogRead(a4))/10.24;
+  va5=analogRead(a5);
+  Serial.println("("+actionsec+","+minmax+","+va1+","+va2+","+va3+","+va4+","+va5+")");
+  }
+
 TimedAction ta1 = TimedAction(1000,basics);
+TimedAction ta2 = TimedAction(5000,output);
 
 void setup() {
 pinMode(9,OUTPUT);
@@ -125,10 +139,10 @@ pinMode(10,OUTPUT);
 pinMode(12,OUTPUT);
 pinMode(13,OUTPUT);
 Serial.begin(115200);
-writeaddr = 0; actionsec="2,2,2,2"; minmax="050,055";  writeeeprom(actionsec); writeeeprom(minmax);
 }
 
 void loop(){
   ta1.check();
   handlecomm();
+  ta2.check();
   }
