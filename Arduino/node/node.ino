@@ -11,52 +11,51 @@ Serial.println("@"+server.arg("min")+","+server.arg("max"));
 server.send(200, "text/plain", "success");
   }
 void handleRoot11() {
-	Serial.print("(11");
+	Serial.println("(11");
   server.send(200, "text/plain", "success");
 }
 void handleRoot32() {
-  Serial.print("(32");
+  Serial.println("(32");
   server.send(200, "text/plain", "success");
 }
 void handleRoot31() {
-  Serial.print("(31");
+  Serial.println("(31");
   server.send(200, "text/plain", "success");
 }
 void handleRoot30() {
-  Serial.print("(30");
+  Serial.println("(30");
   server.send(200, "text/plain", "success");
 }
-
 void handleRoot22() {
-  Serial.print("(22");
+  Serial.println("(22");
   server.send(200, "text/plain", "success");
 }
 void handleRoot21() {
-  Serial.print("(21");
+  Serial.println("(21");
   server.send(200, "text/plain", "success");
 }
 void handleRoot20() {
-  Serial.print("(20");
+  Serial.println("(20");
   server.send(200, "text/plain", "success");
 }
 void handleRoot10() {
-  Serial.print("(10");
+  Serial.println("(10");
   server.send(200, "text/plain", "success");
 }
 void handleRoot12() {
-  Serial.print("(12");
+  Serial.println("(12");
   server.send(200, "text/plain", "success");
 }
 void handleRoot42() {
-  Serial.print("(42");
+  Serial.println("(42");
   server.send(200, "text/plain", "success");
 }
 void handleRoot41() {
-  Serial.print("(41");
+  Serial.println("(41");
   server.send(200, "text/plain", "success");
 }
 void handleRoot40() {
-  Serial.print("(40");
+  Serial.println("(40");
   server.send(200, "text/plain", "success");
 }
 void setup() {
